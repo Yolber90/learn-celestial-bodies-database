@@ -163,9 +163,9 @@ ALTER SEQUENCE public.planet_planet_id_seq OWNED BY public.planet.planet_id;
 --
 
 CREATE TABLE public.satellites (
-    satellite_id integer NOT NULL,
+    satellites_id integer NOT NULL,
     planet_id integer,
-    name character varying(30)
+    name character varying(30) NOT NULL
 );
 
 
@@ -190,7 +190,7 @@ ALTER TABLE public.satellites_satellite_id_seq OWNER TO freecodecamp;
 -- Name: satellites_satellite_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: freecodecamp
 --
 
-ALTER SEQUENCE public.satellites_satellite_id_seq OWNED BY public.satellites.satellite_id;
+ALTER SEQUENCE public.satellites_satellite_id_seq OWNED BY public.satellites.satellites_id;
 
 
 --
@@ -252,10 +252,10 @@ ALTER TABLE ONLY public.planet ALTER COLUMN planet_id SET DEFAULT nextval('publi
 
 
 --
--- Name: satellites satellite_id; Type: DEFAULT; Schema: public; Owner: freecodecamp
+-- Name: satellites satellites_id; Type: DEFAULT; Schema: public; Owner: freecodecamp
 --
 
-ALTER TABLE ONLY public.satellites ALTER COLUMN satellite_id SET DEFAULT nextval('public.satellites_satellite_id_seq'::regclass);
+ALTER TABLE ONLY public.satellites ALTER COLUMN satellites_id SET DEFAULT nextval('public.satellites_satellite_id_seq'::regclass);
 
 
 --
@@ -332,6 +332,9 @@ INSERT INTO public.planet VALUES (17, 8, 'Caeruleum', 'gas giant', true, false, 
 -- Data for Name: satellites; Type: TABLE DATA; Schema: public; Owner: freecodecamp
 --
 
+INSERT INTO public.satellites VALUES (1, 5, 'Hubble');
+INSERT INTO public.satellites VALUES (2, 5, 'Sputnik');
+INSERT INTO public.satellites VALUES (3, 5, 'ISS');
 
 
 --
@@ -373,7 +376,7 @@ SELECT pg_catalog.setval('public.planet_planet_id_seq', 17, true);
 -- Name: satellites_satellite_id_seq; Type: SEQUENCE SET; Schema: public; Owner: freecodecamp
 --
 
-SELECT pg_catalog.setval('public.satellites_satellite_id_seq', 1, false);
+SELECT pg_catalog.setval('public.satellites_satellite_id_seq', 3, true);
 
 
 --
@@ -392,6 +395,14 @@ ALTER TABLE ONLY public.galaxy
 
 
 --
+-- Name: moon moon_name_unq; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
+--
+
+ALTER TABLE ONLY public.moon
+    ADD CONSTRAINT moon_name_unq UNIQUE (name);
+
+
+--
 -- Name: moon moon_pkey; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
 --
 
@@ -400,11 +411,51 @@ ALTER TABLE ONLY public.moon
 
 
 --
+-- Name: galaxy name_unq; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
+--
+
+ALTER TABLE ONLY public.galaxy
+    ADD CONSTRAINT name_unq UNIQUE (name);
+
+
+--
+-- Name: planet planet_name_unq; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
+--
+
+ALTER TABLE ONLY public.planet
+    ADD CONSTRAINT planet_name_unq UNIQUE (name);
+
+
+--
 -- Name: planet planet_pkey; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
 --
 
 ALTER TABLE ONLY public.planet
     ADD CONSTRAINT planet_pkey PRIMARY KEY (planet_id);
+
+
+--
+-- Name: satellites satellites_name_unq; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
+--
+
+ALTER TABLE ONLY public.satellites
+    ADD CONSTRAINT satellites_name_unq UNIQUE (name);
+
+
+--
+-- Name: satellites satellites_pkey; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
+--
+
+ALTER TABLE ONLY public.satellites
+    ADD CONSTRAINT satellites_pkey PRIMARY KEY (satellites_id);
+
+
+--
+-- Name: star star_name_unq; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
+--
+
+ALTER TABLE ONLY public.star
+    ADD CONSTRAINT star_name_unq UNIQUE (name);
 
 
 --
